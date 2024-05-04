@@ -3,7 +3,7 @@ const localStorageWithExpiry = {
         const now = new Date();
         const item = {
             value: value,
-            expiry: now.getTime() + (expirySeconds * 1000)
+            expiry: now.getTime() + (expirySeconds)
         };
         localStorage.setItem(key, JSON.stringify(item));
     },
@@ -13,15 +13,17 @@ const localStorageWithExpiry = {
         const item = JSON.parse(itemString);
         const now = new Date();
         if (now.getTime() > item.expiry) {
-            localStorage.removeItem(key);
-            return null;
+            localStorage.removeItem(key); 
+            return undefined;
         }
         return item.value;
     }
 };
 
-localStorageWithExpiry.setItem("key1", "value", 1000);
-console.log(localStorageWithExpiry.getItem("key1"));
+// Example usage:
+localStorageWithExpiry.setItem("key1", "value", 1000 ); 
+console.log("INTIAL: ", localStorageWithExpiry.getItem("key1"));
+
 setTimeout(() => {
-    console.log(localStorageWithExpiry.getItem("key1"));
+    console.log("AFTER: ",localStorageWithExpiry.getItem("key1"));
 }, 1000);
