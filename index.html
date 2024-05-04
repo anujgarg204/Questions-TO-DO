@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assingment </title>
+</head>
+
+<body>
+    <div class="container" style=" margin:0 auto; width: 80%; margin-top: 200px;">
+        <div>
+            <input placeholder="Enter Value Here" id="value-input">
+            <button id="set-btn">Set Value</button>
+
+        </div>
+        <div>
+            <label id="value"></label>
+            <button id="get-btn">Get Value</button>
+
+        </div>
+    </div>
+    <script>
+        const btnSet = document.getElementById("set-btn");
+        const btnGet = document.getElementById("get-btn");
+        const valueInput = document.getElementById("value-input");
+        const valueDisplay = document.getElementById("value");
+
+        btnSet.addEventListener("click", () => {
+            setWithTtl(valueInput.value)
+        })
+        btnGet.addEventListener("click", () => {
+            getValidItems()
+        })
+
+
+        const setWithTtl = (value) => {
+            const now = new Date().getTime();
+
+            if (!value) {
+                return;
+            }
+            const item = {
+                value: value,
+                //1000s = 1000000ms
+                expiry: now + 1000000
+            }
+            localStorage.setItem("key", JSON.stringify(item));
+        }
+        const getValidItems = () => {
+            const now = new Date().getTime();
+            const item = localStorage.getItem("key");
+            if (!item) {
+                return valueDisplay.textContent = "undefined";
+            }
+            const itemObj = JSON.parse(item);
+            const isExpired = itemObj.expiry < now;
+            if (isExpired) {
+                localStorage.removeItem("key");
+                valueDisplay.textContent = "undefined"
+            }
+            else {
+                return valueDisplay.textContent = itemObj.value;
+            }
+
+        }
+
+
+    </script>
+</body>
+
+</html>
