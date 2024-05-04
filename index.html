@@ -37,48 +37,49 @@
 
 
         setBtn.addEventListener("click", () => {
-            setWithTtl(keyInput.value, valueInput.value, ttlInput.value)
+            localStorageWithExpiry.setItem(keyInput.value, valueInput.value, ttlInput.value)
         })
         getBtn.addEventListener("click", () => {
             if (!filterKeyInput.value) {
                 window.alert("PLease enter a key to fetch ");
                 return undefined;
             }
-            getValidItems(filterKeyInput.value);
+            localStorageWithExpiry.getItem(filterKeyInput.value);
         })
 
+        const localStorageWithExpiry = {
+            setItem: (key, value, ttl) => {
+                const now = new Date().getTime();
 
-        const setWithTtl = (key, value, ttl) => {
-            const now = new Date().getTime();
+                if (!value) {
+                    return;
+                }
+                const item = {
+                    value: value,
+                    expiry: now + parseInt(ttl)
+                }
+                localStorage.setItem(key, JSON.stringify(item));
+            },
+            getItem: (key) => {
+                const now = new Date().getTime();
+                const item = localStorage.getItem(key);
+                if (!item) {
+                    window.alert("UNDEFINED");
+                    return undefined;
+                }
+                const itemObj = JSON.parse(item);
+                const isExpired = itemObj.expiry < now;
+                if (isExpired) {
+                    localStorage.removeItem(key);
+                    window.alert("UNDEFINED");
+                    return undefined;
+                }
+                else {
+                    window.alert(itemObj.value)
+                    return itemObj.value;
+                }
 
-            if (!value) {
-                return;
             }
-            const item = {
-                value: value,
-                expiry: now + parseInt(ttl)
-            }
-            localStorage.setItem(key, JSON.stringify(item));
-        }
-        const getValidItems = (key) => {
-            const now = new Date().getTime();
-            const item = localStorage.getItem(key);
-            if (!item) {
-                window.alert("UNDEFINED");
-                return undefined;
-            }
-            const itemObj = JSON.parse(item);
-            const isExpired = itemObj.expiry < now;
-            if (isExpired) {
-                localStorage.removeItem(key);
-                window.alert("UNDEFINED");
-                return undefined;
-            }
-            else {
-                window.alert(itemObj.value)
-                return itemObj.value;
-            }
-
         }
 
 
