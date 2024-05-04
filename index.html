@@ -9,32 +9,46 @@
 
 <body>
     <div class="container" style=" margin:0 auto; width: 80%; margin-top: 200px;">
-        <div>
-            <input placeholder="Enter Value Here" id="value-input">
-            <button id="set-btn">Set Value</button>
+
+        <div style="display: flex;">
+            <input placeholder="Enter Key Here" id="set-key-input">
+            <input placeholder="Enter Value Here" id="set-value-input">
+            <input id="set-ttl-input" placeholder="Enter Time to live here"></input>
+            <button id="set-btn">Set </button>
+
 
         </div>
-        <div>
-            <label id="value"></label>
+        <div style="display: flex;">
+            <input id="get-key-input" placeholder="Enter Key to fetch"></input>
             <button id="get-btn">Get Value</button>
+
+
 
         </div>
     </div>
     <script>
-        const btnSet = document.getElementById("set-btn");
-        const btnGet = document.getElementById("get-btn");
-        const valueInput = document.getElementById("value-input");
-        const valueDisplay = document.getElementById("value");
+        const keyInput = document.getElementById("set-key-input");
+        const valueInput = document.getElementById("set-value-input");
+        const ttlInput = document.getElementById("set-ttl-input");
+        const setBtn = document.getElementById("set-btn");
+        const filterKeyInput = document.getElementById("get-key-input");
+        const getBtn = document.getElementById("get-btn");
 
-        btnSet.addEventListener("click", () => {
-            setWithTtl(valueInput.value)
+
+
+        setBtn.addEventListener("click", () => {
+            setWithTtl(keyInput.value, valueInput.value, ttlInput.value)
         })
-        btnGet.addEventListener("click", () => {
-            getValidItems()
+        getBtn.addEventListener("click", () => {
+            if (!filterKeyInput.value) {
+                window.alert("PLease enter a key to fetch ");
+                return undefined;
+            }
+            getValidItems(filterKeyInput.value);
         })
 
 
-        const setWithTtl = (value) => {
+        const setWithTtl = (key, value, ttl) => {
             const now = new Date().getTime();
 
             if (!value) {
@@ -42,25 +56,27 @@
             }
             const item = {
                 value: value,
-                //1000s = 1000000ms
-                expiry: now + 1000000
+                expiry: now + parseInt(ttl)
             }
-            localStorage.setItem("key", JSON.stringify(item));
+            localStorage.setItem(key, JSON.stringify(item));
         }
-        const getValidItems = () => {
+        const getValidItems = (key) => {
             const now = new Date().getTime();
-            const item = localStorage.getItem("key");
+            const item = localStorage.getItem(key);
             if (!item) {
-                return valueDisplay.textContent = "undefined";
+                window.alert("UNDEFINED");
+                return undefined;
             }
             const itemObj = JSON.parse(item);
             const isExpired = itemObj.expiry < now;
             if (isExpired) {
-                localStorage.removeItem("key");
-                valueDisplay.textContent = "undefined"
+                localStorage.removeItem(key);
+                window.alert("UNDEFINED");
+                return undefined;
             }
             else {
-                return valueDisplay.textContent = itemObj.value;
+                window.alert(itemObj.value)
+                return itemObj.value;
             }
 
         }
