@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assingment </title>
+</head>
+
+<body>
+    <div class="container" style=" margin:0 auto; width: 80%; margin-top: 200px;">
+
+        <div style="display: flex;">
+            <input placeholder="Enter Key Here" id="set-key-input">
+            <input placeholder="Enter Value Here" id="set-value-input">
+            <input id="set-ttl-input" placeholder="Enter Time to live here"></input>
+            <button id="set-btn">Set </button>
+
+
+        </div>
+        <div style="display: flex;">
+            <input id="get-key-input" placeholder="Enter Key to fetch"></input>
+            <button id="get-btn">Get Value</button>
+
+
+
+        </div>
+    </div>
+    <script>
+        const keyInput = document.getElementById("set-key-input");
+        const valueInput = document.getElementById("set-value-input");
+        const ttlInput = document.getElementById("set-ttl-input");
+        const setBtn = document.getElementById("set-btn");
+        const filterKeyInput = document.getElementById("get-key-input");
+        const getBtn = document.getElementById("get-btn");
+
+
+
+        setBtn.addEventListener("click", () => {
+            localStorageWithExpiry.setItem(keyInput.value, valueInput.value, ttlInput.value)
+        })
+        getBtn.addEventListener("click", () => {
+            if (!filterKeyInput.value) {
+                window.alert("PLease enter a key to fetch ");
+                return undefined;
+            }
+            localStorageWithExpiry.getItem(filterKeyInput.value);
+        })
+
+        const localStorageWithExpiry = {
+            setItem: (key, value, ttl) => {
+                const now = new Date().getTime();
+
+                if (!value) {
+                    return;
+                }
+                const item = {
+                    value: value,
+                    expiry: now + parseInt(ttl)
+                }
+                localStorage.setItem(key, JSON.stringify(item));
+            },
+            getItem: (key) => {
+                const now = new Date().getTime();
+                const item = localStorage.getItem(key);
+                if (!item) {
+                    window.alert("UNDEFINED");
+                    return undefined;
+                }
+                const itemObj = JSON.parse(item);
+                const isExpired = itemObj.expiry < now;
+                if (isExpired) {
+                    localStorage.removeItem(key);
+                    window.alert("UNDEFINED");
+                    return undefined;
+                }
+                else {
+                    window.alert(itemObj.value)
+                    return itemObj.value;
+                }
+
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
