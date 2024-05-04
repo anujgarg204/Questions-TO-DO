@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Store Value</title>
+    <link rel="stylesheet" href="./dist/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="flex justify-center items-center h-screen bg-indigo-600">
+      <div class="w-96 p-6 shadow-lg bg-white rounded-md">
+        <h1 class="text-3xl block text-center font-semibold">Store Value</h1>
+        <hr class="mt-3" />
+        <form id="storageForm">
+          <div class="mt-3">
+            <label for="key" class="block text-base mb-2">Enter Key</label>
+            <input
+              type="text"
+              id="key"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Key..."
+            />
+          </div>
+          <div class="mt-3">
+            <label for="value" class="block text-base mb-2">Enter Value</label>
+            <input
+              type="text"
+              id="value"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+              placeholder="Enter Value..."
+            />
+          </div>
+          <div class="mt-3">
+            <label for="expiry" class="block text-base mb-2">Expire Date</label>
+            <input
+              type="datetime-local"
+              id="expiry"
+              class="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            />
+          </div>
+
+          <div class="mt-5">
+            <button
+              type="submit"
+              class="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold"
+            >
+              Store value
+            </button>
+          </div>
+        </form>
+        <p id="displayValue"></p>
+      </div>
+    </div>
+    <script src="localStorageWithExpiry.js"></script>
+
+    <script>
+      let expiry, key, value;
+      document
+        .getElementById('storageForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          key = document.getElementById('key').value;
+          value = document.getElementById('value').value;
+          expiry = document.getElementById('expiry').value;
+          alert('Item set successfully!');
+
+          localStorageWithExpiry.setItem(key, value, expiry);
+          document.getElementById('displayValue').innerHTML =
+            localStorageWithExpiry.getItem(key);
+        });
+      const id = setInterval(() => {
+        if (key && expiry) {
+          const displayText =
+            new Date(expiry).getTime() - new Date().getTime() > 0
+              ? `The value from localStorage is: <b>${localStorageWithExpiry.getItem(
+                  key
+                )}</b>. Remaining time: <b>${(
+                  (new Date(expiry).getTime() - new Date().getTime()) /
+                  1000
+                ).toFixed(0)}</b> s`
+              : `The value from localStorage is: <b>${localStorageWithExpiry.getItem(
+                  key
+                )}</b>. Remaining time:     <b>Expired</b>`;
+
+          document.getElementById('displayValue').innerHTML = displayText;
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
