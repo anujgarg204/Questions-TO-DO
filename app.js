@@ -28,9 +28,9 @@ window.localStorageWithExpiry = {
 window.localStorageWithExpiry.setItem("key1", "value", 1000);
 console.log(window.localStorageWithExpiry.getItem("key1")); //  "value"
 setTimeout(function() {
-    console.log(window.localStorageWithExpiry.getItem("key1")); //  "Value" still there 990s left
+    console.log(window.localStorageWithExpiry.getItem("key1")); //  "Value" still there 990ms left
 }, 10);
 
 setTimeout(function() {
-    console.log(window.localStorageWithExpiry.getItem("key1")); //  undefined 
+    console.log(window.localStorageWithExpiry.getItem("key1")); //  undefined 1000s completed
 }, 1000 * 1000);
