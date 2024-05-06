@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Storage with Expiry</title>
+    <link rel="stylesheet" href="challangeStyle.css" />
+  </head>
+  <body>
+    <label for="keyInput">Key:</label>
+    <input type="text" id="keyInput" /><br /><br />
+
+    <label for="valueInput">Value:</label>
+    <input type="text" id="valueInput" /><br /><br />
+
+    <label for="expiryInput">Expiry Time (seconds):</label>
+    <input type="number" id="expiryInput" /><br /><br />
+
+    <button onclick="setItemWithExpiry()">Set Item with Expiry</button
+    ><br /><br />
+
+    <div id="output"></div>
+
+    <script src="challangeScript.js"></script>
+  </body>
+</html>
