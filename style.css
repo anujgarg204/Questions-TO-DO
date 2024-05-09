@@ -84,9 +84,10 @@ button[type="submit"]:hover {
 }
 
 
+
 .footer {
-    background-color: #b6a0d7;
-    color: white;
+    background-color: #f4f4f4;
+    color: #b6a0d7;
     text-align: center;
     width: 100%;
     bottom: 0;
