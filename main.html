@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Challange 1 :My work -- Mohamed Ayhem Zamouri</title>
+</head>
+<body>
+
+</body>
+    <script>
+        const localStorageWithExpiery = {
+            setItem : function (key, value, time) {
+                const item = {
+                    value : value,
+                    expiry : Date.now() + time // setting the time when the item will not be accessible
+                }
+                localStorage.setItem(key, JSON.stringify(item));
+            },
+            getItem : function (key) {
+                const data = localStorage.getItem(key);
+                const data_json = JSON.parse(data);
+
+                if (data && data_json.expiry >= Date.now()){
+                    console.log(`Answer -> ${data_json.value}`);
+                }
+                else if (!data){
+                    console.log(`Answer -> undefined`);
+                }
+                else {
+                    localStorage.removeItem(key);
+                    console.log(`Answer -> undefined`);
+                }
+            }
+        }
+
+        // Testing
+        localStorageWithExpiery.setItem("first", "js",1000);
+        localStorageWithExpiery.getItem("first");
+
+        localStorageWithExpiery.setItem("second", "php",1000);
+
+        setTimeout(() => {
+            localStorageWithExpiery.getItem("second");
+        },5000);
+
+        setTimeout(() => {
+            localStorageWithExpiery.getItem("second");
+        },6000);
+    </script>
+</html>
