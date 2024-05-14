@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Set Key</h1>
+    <label for="keyInput">Key:</label>
+    <input type="text" id="keyInput"><br><br>
+    <label for="valueInput">Value:</label>
+    <input type="text" id="valueInput"><br><br>
+    <label for="expiryInput">Expiry (melli-seconds):</label>
+    <input type="number" id="expiryInput"><br><br>
+    <button onclick="setItem()">Set Item</button><br><br>
+    <h1>Get Key</h1>
+
+    <label for="keyInput">Key:</label>
+    <input type="text" id="keyInputGetter"><br><br>
+
+    <button onclick="getItem()">Get Item</button><br><br>
+    <div id="output"></div>
+</body>
+<script  src="index.js"></script>
+<script>
+     function setItem() {
+            const key = document.getElementById("keyInput").value;
+            const value = document.getElementById("valueInput").value;
+            const expiry = parseInt(document.getElementById("expiryInput").value);
+            setItemWithExpiry(key, value, expiry);
+            document.getElementById("output").innerText = `Item with key "${key}" set with expiry ${expiry} melli-seconds.`;
+        }
+
+        function getItem() {
+            const key = document.getElementById("keyInputGetter").value;
+            const value = getItemWithExpiry(key);
+            if (value !== undefined) {
+                document.getElementById("output").innerText = `Value for key "${key}" is "${value}".`;
+            } else {
+                document.getElementById("output").innerText = `No value found for key "${key}".`;
+            }
+        }
+</script>
+</html>
